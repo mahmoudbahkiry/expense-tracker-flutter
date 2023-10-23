@@ -1,4 +1,6 @@
 
+// ignore_for_file: prefer_const_constructors
+
 import 'package:expense_tracker_app/views/Home_view.dart';
 import 'package:expense_tracker_app/views/Signup_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,15 +73,24 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(246, 255, 255, 255),
-      body: SafeArea(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/kunj-parekh-Y5BD-H9qGvs-unsplash.jpg'),
+            fit: BoxFit.cover
+
+          )
+        ),
+
+
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Application logo
-                Image.asset('images/pngegg.png', height: 100),
-                const SizedBox(height: 20),
+                Image.asset('images/cover.png', height: 140),
+            
                 // Sign-in title
                 const Text(
                   'Sign In',
@@ -88,10 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10),
+                
                 // Description
                 const Text(
-                  'To access your account and manage transactions',
+                  'Your money , your rules',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 30),
@@ -102,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(Icons.email_outlined, color: Colors.black),
                   keyboardType: TextInputType.emailAddress,
                 ),
+                  const SizedBox(height: 10),
                 // Password input field
                 buildInputField(
                   isPassword: true,
@@ -110,10 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(Icons.lock_outline, color: Colors.black),
                   obscureText: true,
                 ),
+                  const SizedBox(height: 10),
                 // Sign-in button
                 buildSignInButton(),
+                  const SizedBox(height: 10),
                 // Sign-up link
                 buildSignUpText(context),
+                  const SizedBox(height: 40),
               ],
             ),
           ),
@@ -195,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const Text(
             "Don't have an account? ",
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
           ),
           GestureDetector(
             onTap: () {
@@ -207,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 41, 121, 145),
+                  color: const Color.fromARGB(255, 22, 182, 158),
               ),
             ),
           ),

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:expense_tracker_app/views/Login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,8 @@ class _SignUpState extends State<SignUp> {
     User? user = FirebaseAuth.instance.currentUser;
     await user?.reload(); // Reload user information from Firebase
     user = FirebaseAuth.instance.currentUser; // Get the updated user
-    return user?.emailVerified ?? false; // Return whether email is verified or not
+    return user?.emailVerified ??
+        false; // Return whether email is verified or not
   }
 
   Future<void> signUp() async {
@@ -81,15 +84,24 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(246, 255, 255, 255),
-      body: SafeArea(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/download.jpg'),
+            fit: BoxFit.cover
+
+          )
+        ),
+
+
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'images/pngegg.png',
-                  height: 100,
+                  'images/cover.png',
+                  height: 130,
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -101,7 +113,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  'Welcome to your personal expense tracker',
+                  'Welcome to ExpensePro :)  ',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 30),
@@ -162,7 +174,7 @@ class _SignUpState extends State<SignUp> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 23, 23, 23).withOpacity(.1),
+          color: Color.fromARGB(255, 0, 0, 0).withOpacity(.2),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Padding(
@@ -175,23 +187,25 @@ class _SignUpState extends State<SignUp> {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
+              hintStyle: TextStyle(color:Color.fromARGB(213, 255, 255, 255)),
               prefixIcon: prefixIcon,
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
-             validator: (value) {
-               if (isEmailField) {
-                 if (value == null || !value.contains('@') || !value.contains('.')) {
-                    return 'Please enter a valid email address';
-           }
-        }
-                if (isPassword) {
-                   if (value == null || value.length < 6) {
-                     return 'Minimum required characters: 6';
-    }
-  }
-                      return null; // Return null if the input is valid
-},
-
+            validator: (value) {
+              if (isEmailField) {
+                if (value == null ||
+                    !value.contains('@') ||
+                    !value.contains('.')) {
+                  return 'Please enter a valid email address';
+                }
+              }
+              if (isPassword) {
+                if (value == null || value.length < 6) {
+                  return 'Minimum required characters: 6';
+                }
+              }
+              return null; // Return null if the input is valid
+            },
           ),
         ),
       ),
@@ -238,20 +252,21 @@ class _SignUpState extends State<SignUp> {
             "Already have an account? ",
             style: TextStyle(
               fontSize: 17,
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             },
             child: const Text(
               ' Sign In',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 41, 121, 145),
+                color: const Color.fromARGB(255, 22, 182, 158),
               ),
             ),
           ),
