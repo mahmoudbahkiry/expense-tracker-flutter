@@ -1,5 +1,5 @@
+import 'package:expense_tracker_app/auth/auth.dart';
 import 'package:expense_tracker_app/firebase_options.dart';
-import 'package:expense_tracker_app/views/Login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ), // ThemeData
-      home: const LoginScreen(),
+      home: const Auth(),
     ); // MaterialApp
  }
 }
