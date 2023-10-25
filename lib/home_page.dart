@@ -1,4 +1,5 @@
-import 'package:expense_tracker_app/category_dropdown_button.dart';
+import 'package:expense_tracker_app/expense_dialog.dart';
+import 'package:expense_tracker_app/income_expence_dropdown_menu.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showExpenseDialog();
+          showIncomeExpenseDialog();
         },
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
@@ -28,14 +29,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void showExpenseDialog() {
+  void showIncomeExpenseDialog() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return const CategoryDropDownButton();
+              return const IncomeExpenseDropdownMenu();
             },
           ),
         );
@@ -43,7 +44,6 @@ class _HomePageState extends State<HomePage> {
     ).then((value) {
       if (value != null) {
         setState(() {
-          devtools.log(dropdownValue.toString());
           dropdownValue = value;
           devtools.log(dropdownValue.toString());
         });
