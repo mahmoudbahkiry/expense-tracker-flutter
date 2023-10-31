@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image:
-                    AssetImage('images/kunj-parekh-Y5BD-H9qGvs-unsplash.jpg'),
+                    AssetImage('images/john.jpg'),
                 fit: BoxFit.cover)),
         child: Center(
           child: SingleChildScrollView(
@@ -91,7 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Application logo
-                Image.asset('images/cover.png', height: 140),
+                Image.asset('images/undraw_Mobile_login_re_9ntv.png', height: 140),
+                
 
                 // Sign-in title
                 const Text(
@@ -216,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 255, 255, 255)),
+                color: Color.fromARGB(255, 0, 0, 0)),
           ),
           GestureDetector(
             onTap: () {
@@ -247,7 +248,7 @@ Widget ForgetPassText(BuildContext context) {
     },
     child: Text(
       'Forgot password ?',
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),
     ),
   );
 }

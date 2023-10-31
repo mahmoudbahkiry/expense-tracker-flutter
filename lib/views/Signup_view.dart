@@ -87,7 +87,7 @@ class _SignUpState extends State<SignUp> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/download.jpg'),
+            image: AssetImage('images/john-new.jpg'),
             fit: BoxFit.cover
 
           )
@@ -100,7 +100,7 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'images/cover.png',
+                  'images/undraw_my_app_re_gxtj.png',
                   height: 130,
                 ),
                 const SizedBox(height: 20),
@@ -187,7 +187,7 @@ class _SignUpState extends State<SignUp> {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,
-              hintStyle: TextStyle(color:Color.fromARGB(213, 255, 255, 255)),
+              hintStyle: TextStyle(color:Color.fromARGB(212, 0, 0, 0)),
               prefixIcon: prefixIcon,
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -266,7 +266,7 @@ class _SignUpState extends State<SignUp> {
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 22, 182, 158),
+                color: Color.fromARGB(255, 22, 182, 158),
               ),
             ),
           ),
