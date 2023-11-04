@@ -1,13 +1,15 @@
 import 'package:expense_tracker_app/ChartBar.dart';
 import 'package:expense_tracker_app/ModelBar.dart';
 import 'package:expense_tracker_app/ChartPie.dart';
+import 'package:expense_tracker_app/ModelLine.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 
 class DashBoard extends StatelessWidget {
 
+// Data for bar graph
   final List<ModelBar> data = [
 
     ModelBar(
@@ -37,9 +39,43 @@ class DashBoard extends StatelessWidget {
     ),
   ];
 
+// Data for line graph
+    List<SalesData> _chartData = <SalesData>[
+    SalesData('Jan', 35),
+    SalesData('Feb', 28),
+    SalesData('Mar', 34),
+    SalesData('Apr', 32),
+    SalesData('May', 40)
+  ];
+
   // Scaffold for dashboard
 
-@override
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          child: SfCartesianChart(
+            primaryXAxis: CategoryAxis(),
+            title: ChartTitle(text: 'Line Graph'),
+            legend: Legend(isVisible: true),
+            series: <LineSeries<SalesData, String>>[
+              LineSeries<SalesData, String>(
+                dataSource: _chartData,
+                xValueMapper: (SalesData sales, _) => sales.year,
+                yValueMapper: (SalesData sales, _) => sales.sales,
+                dataLabelSettings: DataLabelSettings(isVisible: true),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Scaffold for Pie Chart
+/*@override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -47,7 +83,10 @@ class DashBoard extends StatelessWidget {
     );
   }
 }
+*/
 
+
+// Scaffold for Bar Chart
 /*@override
   Widget build(BuildContext context) {
     return Scaffold(
