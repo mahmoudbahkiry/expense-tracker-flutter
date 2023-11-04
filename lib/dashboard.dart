@@ -1,5 +1,6 @@
 import 'package:expense_tracker_app/ChartBar.dart';
 import 'package:expense_tracker_app/ModelBar.dart';
+import 'package:expense_tracker_app/ChartPie.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -37,7 +38,17 @@ class DashBoard extends StatelessWidget {
   ];
 
   // Scaffold for dashboard
+
 @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: MyPieChart(),
+    );
+  }
+}
+
+/*@override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -47,7 +58,12 @@ class DashBoard extends StatelessWidget {
       ),
     );
   }
-}
+*/
+
+
+
+ 
+
 
 
 
