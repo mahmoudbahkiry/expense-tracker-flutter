@@ -5,11 +5,13 @@ import 'package:expense_tracker_app/ModelLine.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:expense_tracker_app/TransactionList.dart';
+
 
 
 class DashBoard extends StatelessWidget {
 
-// Data for bar graph
+// Data for Bar Graph
   final List<ModelBar> data = [
 
     ModelBar(
@@ -39,8 +41,33 @@ class DashBoard extends StatelessWidget {
     ),
   ];
 
+  // Scaffold for dashboard
+
+
+
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: TransactionList(),
+    );
+  }
+}
+
+// Scaffold for Pie Chart
+/*
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: TransactionList(),
+    );
+  }
+}
+*/
+
 // Data for line graph
-    List<SalesData> _chartData = <SalesData>[
+/*    List<SalesData> _chartData = <SalesData>[
     SalesData('Jan', 35),
     SalesData('Feb', 28),
     SalesData('Mar', 34),
@@ -48,8 +75,7 @@ class DashBoard extends StatelessWidget {
     SalesData('May', 40)
   ];
 
-  // Scaffold for dashboard
-
+// Scaffold for line graph
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,18 +99,7 @@ class DashBoard extends StatelessWidget {
     );
   }
 }
-
-// Scaffold for Pie Chart
-/*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: MyPieChart(),
-    );
-  }
-}
 */
-
 
 // Scaffold for Bar Chart
 /*@override

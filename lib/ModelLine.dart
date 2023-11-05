@@ -4,7 +4,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // Line Model code
 class TooltipBehavior {} var _tooltipBehavior;
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ModelLine extends State<ModelLine> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +50,12 @@ class SalesData {
   final double sales;
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class ModelLine extends StatefulWidget {
+  ModelLine({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _ModelLine createState() => _ModelLine();
 }
+
