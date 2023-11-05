@@ -4,6 +4,7 @@ import 'package:expense_tracker_app/ChartPie.dart';
 import 'package:expense_tracker_app/ModelLine.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:pie_chart/pie_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:expense_tracker_app/TransactionList.dart';
 
@@ -43,8 +44,38 @@ class DashBoard extends StatelessWidget {
 
   // Scaffold for dashboard
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(),
+        resizeToAvoidBottomInset: false,
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: MyPieChart(),
+            ),
+            Expanded(
+              child: TransactionList(),
+            ), 
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
+
+
+
+
+
+// Scaffold for Transaction History
+/*
 @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +84,7 @@ class DashBoard extends StatelessWidget {
     );
   }
 }
+*/
 
 // Scaffold for Pie Chart
 /*
@@ -60,7 +92,7 @@ class DashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: TransactionList(),
+      body: MyPieChart(),
     );
   }
 }
