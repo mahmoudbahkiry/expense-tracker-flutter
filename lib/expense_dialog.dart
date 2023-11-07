@@ -92,6 +92,8 @@ class _ExpenseDialogState extends State<ExpenseDialog> {
         TextButton(
           onPressed: () {
             Navigator.pop(context, dropdownvalue);
+            devtools.log(_amountExpense.text.toString());
+            devtools.log(_descriptionExpense.text.toString());
           },
           child: const Text("Add"),
         ),

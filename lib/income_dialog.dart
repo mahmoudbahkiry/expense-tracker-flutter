@@ -1,4 +1,6 @@
+import 'package:expense_tracker_app/income_expence_dropdown_menu.dart';
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 import 'dart:developer' as devtools show log;
 
 class IncomeDialog extends StatefulWidget {
@@ -90,6 +92,8 @@ class _IncomeDialogState extends State<IncomeDialog> {
         TextButton(
           onPressed: () {
             Navigator.pop(context, dropdownvalue);
+            devtools.log(_amountIncome.text.toString());
+            devtools.log(_descriptionIncome.text.toString());
           },
           child: const Text("Add"),
         ),
