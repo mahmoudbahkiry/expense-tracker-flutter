@@ -13,21 +13,39 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String dropdownValue = "Not yet written";
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Expense Pro"),
-        backgroundColor: Colors.green,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showIncomeExpenseDialog();
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text("Expense Pro"),
+          backgroundColor: Colors.green,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showIncomeExpenseDialog();
+          },
+          backgroundColor: Colors.green,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text("Expense Pro"),
+    //     backgroundColor: Colors.green,
+    //   ),
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: () {
+    //       showIncomeExpenseDialog();
+    //     },
+    //     backgroundColor: Colors.green,
+    //     child: const Icon(Icons.add),
+    //   ),
+    // );
   }
 
   void showIncomeExpenseDialog() {

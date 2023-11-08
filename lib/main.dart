@@ -1,4 +1,5 @@
 import 'package:expense_tracker_app/home_page.dart';
+import 'package:expense_tracker_app/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -29,8 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const HomePage(),
-          transitionDuration: const Duration(milliseconds: 300),
+          pageBuilder: (_, __, ___) => const LandingPage(),
+          transitionDuration: const Duration(milliseconds: 500),
           transitionsBuilder: (_, a, __, c) =>
               FadeTransition(opacity: a, child: c),
         ),
