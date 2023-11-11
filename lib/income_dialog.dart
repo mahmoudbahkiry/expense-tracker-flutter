@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class IncomeDialog extends StatefulWidget {
   const IncomeDialog({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _IncomeDialogState extends State<IncomeDialog> {
 
   late final TextEditingController _descriptionIncome;
   late final TextEditingController _amountIncome;
+  final db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -89,6 +91,19 @@ class _IncomeDialogState extends State<IncomeDialog> {
         ),
         TextButton(
           onPressed: () {
+            final income = {
+              'expenseIncomeType': 'Income',
+              'type': dropdownvalue,
+              'amount': _amountIncome.text,
+              'description': _descriptionIncome.text,
+            };
+            db
+                .collection(
+                  "Expense Pro",
+                )
+                .add(income)
+                .then((DocumentReference doc) => devtools
+                    .log('Document added with ID: ${doc.id}'.toString()));
             Navigator.pop(context, dropdownvalue);
             devtools.log(_amountIncome.text.toString());
             devtools.log(_descriptionIncome.text.toString());
