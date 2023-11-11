@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:396337735139:ios:69c61c105428f1a111acd6",
-  "FIREBASE_PROJECT_ID": "expenses-c3971",
-  "GCM_SENDER_ID": "396337735139"
+  "GOOGLE_APP_ID": "1:771315232809:ios:6155eaded1c1d09d3dec38",
+  "FIREBASE_PROJECT_ID": "expense-tracker-flutter-38ad6",
+  "GCM_SENDER_ID": "771315232809"
 }
