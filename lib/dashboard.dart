@@ -20,7 +20,7 @@ class DashBoard extends StatelessWidget {
       developers: 40000,
       barColor: charts.ColorUtil.fromDartColor(Colors.green),
     ),
-    ModelBar(
+    ModelBar( 
       year: 2018,
       developers: 5000,
       barColor: charts.ColorUtil.fromDartColor(Colors.green),
@@ -42,6 +42,110 @@ class DashBoard extends StatelessWidget {
     ),
   ];
 
+
+
+// Non functioning dropdown button implementation for graphs
+/*
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<rftDashBoard> {
+  String dropdownValue = 'Pie Chart';
+
+  void handleDropdownChange(String? newValue) {
+    setState(() {
+      dropdownValue = newValue!;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Dashboard'),
+          actions: <Widget>[
+            MyDropDown(dropdownValue: dropdownValue, onChanged: handleDropdownChange),
+          ],
+        ),
+        resizeToAvoidBottomInset: false,
+        body: MyBody(dropdownValue: dropdownValue),
+      ),
+    );
+  }
+}
+
+class MyDropDown extends StatelessWidget {
+  final String dropdownValue;
+  final ValueChanged<String?> onChanged;
+
+  MyDropDown({Key? key, required this.dropdownValue, required this.onChanged}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: onChanged,
+      items: <String>['Pie Chart', 'Bar Graph', 'Line Graph']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class MyBody extends StatelessWidget {
+  final String dropdownValue;
+
+  MyBody({Key? key, required this.dropdownValue}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: dropdownValue == 'Pie Chart' ? MyPieChart() : dropdownValue == 'Bar Graph' ? ChartBar(data: [],) : MyPieChart(),
+        ),
+        Expanded(
+          child: TransactionList(),
+        ), 
+      ],
+    );
+  }
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Scaffold for dashboard
 
   @override
@@ -51,7 +155,9 @@ class DashBoard extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('Dashboard'),
+        ),
         resizeToAvoidBottomInset: false,
         body: Column(
           children: <Widget>[
