@@ -1,12 +1,64 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:expense_tracker_app/views/Home_view.dart';
 import 'package:expense_tracker_app/views/Signup_view.dart';
 import 'package:expense_tracker_app/views/forget_pass.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// AuthenticationService class handles user authentication
+class AuthenticationService {
+  // Checks if the user's email is verified
+  Future<bool> isEmailVerified(User? user) async {
+    if (user == null) return false;
+    await user.reload();
+    user = FirebaseAuth.instance.currentUser;
+    return user?.emailVerified ?? false;
+  }
+
+  // Sign in user with email and password
+  Future<void> signIn(String email, String password, BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+
+      // Check if email is verified
+      bool isVerified = await isEmailVerified(FirebaseAuth.instance.currentUser);
+
+      if (!isVerified) {
+        showError(context, "Your email is not verified. Please verify your email.");
+      } else {
+        // Navigate to the Home page on successful login
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle authentication exceptions
+      handleAuthException(context, e);
+    }
+  }
+
+  // Display an error message using a SnackBar
+  void showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  // Handle authentication exceptions and show appropriate error messages
+  void handleAuthException(BuildContext context, FirebaseAuthException e) {
+    String errorMessage = '';
+    switch (e.code) {
+      case 'invalid-email':
+        errorMessage = 'The email address is not valid.';
+        break;
+      default:
+        errorMessage = 'Incorrect email or password.';
+    }
+    showError(context, errorMessage);
+  }
+}
+
+// LoginScreen class is the main widget for the login screen
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -15,64 +67,30 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // Controllers for email and password input fields
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  // AuthenticationService instance for handling authentication
+  final AuthenticationService authService = AuthenticationService();
 
   @override
   void dispose() {
-    super.dispose();
+    // Dispose of controllers when the widget is disposed
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
-  Future<bool> isEmailVerified() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    await user?.reload(); // Reload user information from Firebase
-    user = FirebaseAuth.instance.currentUser; // Get the updated user
-    return user?.emailVerified ??
-        false; // Return whether email is verified or not
-  }
-
+  // Sign in button callback
   void _signIn() async {
-    if (emailController.text.trim().isEmpty ||
-        passwordController.text.trim().isEmpty) {
-      showError("Please enter both an email and a password");
+    // Check if email and password are not empty
+    if (emailController.text.trim().isEmpty || passwordController.text.trim().isEmpty) {
+      authService.showError(context, "Please enter both an email and a password");
       return;
     }
 
-    try {
-      // Sign in with Firebase Authentication
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-
-      bool isVerified =
-          await isEmailVerified(); // Check if the email is verified
-
-      if (!isVerified) {
-        showError("Your email is not verified. Please verify your email.");
-      } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const HomePage()));
-      }
-    } on FirebaseAuthException catch (e) {
-      String errorMessage = '';
-      switch (e.code) {
-        case 'invalid-email':
-          errorMessage = 'The email address is not valid.';
-          break;
-        default:
-          errorMessage = 'Incorrect email or password.';
-      }
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(errorMessage)));
-    }
-  }
-
-  void showError(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    // Attempt to sign in with provided credentials
+    await authService.signIn(emailController.text, passwordController.text, context);
   }
 
   @override
@@ -81,10 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Color.fromARGB(246, 255, 255, 255),
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image:
-                    AssetImage('images/john.jpg'),
-                fit: BoxFit.cover)),
+          image: DecorationImage(
+            image: AssetImage('images/john.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -92,8 +111,6 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 // Application logo
                 Image.asset('images/undraw_Mobile_login_re_9ntv.png', height: 140),
-                
-
                 // Sign-in title
                 const Text(
                   'Sign In',
@@ -102,13 +119,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 // Description
                 const Text(
-                  'Your money , your rules',
+                  'Your money, your rules',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 30),
+                // Email input field
                 buildInputField(
                   isEmailField: true,
                   controller: emailController,
@@ -132,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Sign-up link
                 buildSignUpText(context),
                 const SizedBox(height: 10),
-                ForgetPassText(context)
+                // Forgot password link
+                ForgetPassText(context),
               ],
             ),
           ),
@@ -215,15 +233,15 @@ class _LoginScreenState extends State<LoginScreen> {
           const Text(
             "Don't have an account? ",
             style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 0, 0)),
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
           ),
           GestureDetector(
             onTap: () {
               // Navigate to the SignUp page when "Sign up" is clicked
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SignUp()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()));
             },
             child: const Text(
               'Sign up',
@@ -240,15 +258,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+// Widget for "Forgot password?" link
 Widget ForgetPassText(BuildContext context) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const ForgetPass() ) );
+        context,
+        MaterialPageRoute(builder: (context) => const ForgetPass()),
+      );
     },
     child: Text(
       'Forgot password ?',
-      style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold),
+      style: TextStyle(
+        color: const Color.fromARGB(255, 0, 0, 0),
+        fontWeight: FontWeight.bold,
+      ),
     ),
   );
 }
