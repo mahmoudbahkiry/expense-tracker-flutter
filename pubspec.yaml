@@ -45,7 +45,6 @@ dependencies:
   # Firebase import
   firebase_database: ^10.3.3
   firebase_core: ^2.21.0
-  cloud_firestore: ^4.12.2
 
   
 dev_dependencies:
