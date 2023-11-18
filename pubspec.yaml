@@ -45,7 +45,9 @@ dependencies:
   # Firebase import
   firebase_database: ^10.3.3
   firebase_core: ^2.21.0
-
+  cloud_firestore: ^4.12.2
+  firedart: ^0.9.7
+  path_provider: ^2.1.1
   
 dev_dependencies:
   flutter_test:

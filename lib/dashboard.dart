@@ -2,11 +2,16 @@ import 'package:expense_tracker_app/ChartBar.dart';
 import 'package:expense_tracker_app/ModelBar.dart';
 import 'package:expense_tracker_app/ChartPie.dart';
 import 'package:expense_tracker_app/ModelLine.dart';
+import 'package:expense_tracker_app/TransactionHistory.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:pie_chart/pie_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:expense_tracker_app/TransactionList.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:expense_tracker_app/firebase_options.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 
 
@@ -161,12 +166,9 @@ class MyBody extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: Column(
           children: <Widget>[
-            Expanded(
-              child: MyPieChart(),
-            ),
-            Expanded(
-              child: TransactionList(),
-            ), 
+            Expanded(child: MyPieChart(),),
+            Expanded(child: TransactionList(),),
+            Expanded(child: FetchData(),),
           ],
         ),
       ),
