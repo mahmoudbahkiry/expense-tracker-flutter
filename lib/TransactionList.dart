@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:expense_tracker_app/TransactionHistory.dart';
 
 class TransactionList extends StatelessWidget {
-  
-  final List<String> dummyData = List<String>.generate(100, (i) => 'Item $i');
+  final List<String> data;
+
+  TransactionList({required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +16,10 @@ class TransactionList extends StatelessWidget {
         Container(
           height: 375.0,
           child: ListView.builder(
-            itemCount: dummyData.length,
+            itemCount: data.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(dummyData[index]),
+                title: Text(data[index]),
               );
             },
           ),

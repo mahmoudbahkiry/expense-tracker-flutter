@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-
+import 'package:expense_tracker_app/TransactionHistory.dart';
 
 class MyPieChart extends StatefulWidget {
   @override
@@ -8,18 +8,26 @@ class MyPieChart extends StatefulWidget {
 }
 
 class _MyPieChartState extends State<MyPieChart> {
-  Map<String, double> dataMap = {
-    'Housing': 5,
-    'Transportation': 3,
-    'Food': 2,
-    'Utilities': 2,
-    'Insurance': 2,
-    'Medical & Healthcare': 2,
-    'Saving/Investing': 2,
-    'Personal Spending': 2,
-    'Entertainment': 2,
-    'Others': 4,
-  };
+  List<Map<String, dynamic>> Newdata = [] ;
+  Map<String, double> dataMap = {};
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    convertData();
+  }
+
+  void convertData() {
+    Map<String, double> tempMap = {};
+    for (var item in Newdata) {
+      if (item['type'] is String && item['amount'] is num) {
+        tempMap[item['type']] = item['amount'].toDouble();
+      }
+    }
+    setState(() {
+      dataMap = tempMap;
+    });
+  }
 
   List<Color> colorList = [
     Colors.blue,

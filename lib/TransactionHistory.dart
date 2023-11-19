@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +7,7 @@ class FetchData extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<FetchData> {
-  String _data = '';
+  List<Map<String, dynamic>> _data = [];
 
   @override
   void didChangeDependencies() {
@@ -18,55 +16,73 @@ class _MyWidgetState extends State<FetchData> {
   }
 
   Future<void> GetInfo() async {
-  try {
-    // Your existing code...
-  } catch (e) {
-    print('An error occurred: $e');
-  }
+    try {
+      final firestore = FirebaseFirestore.instance;
 
-    final firestore = FirebaseFirestore.instance;
+      QuerySnapshot querySnapshot = await firestore.collection('Expense Pro').get();
+      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
-    // Get data from Firestore
-    QuerySnapshot querySnapshot = await firestore.collection('Expense Pro').get();
-    List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+      List<Map<String, dynamic>> data = [];
+      documents.forEach((doc) {
+        Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
+        if (docData.containsKey('type') && docData.containsKey('amount') && docData.containsKey('description') && docData.containsKey('expenseIncomeType')) {
+          data.add(docData);
+        }
+      });
 
-    // Prepare data for writing to file
-    String data = '';
-    documents.forEach((doc) {
-      data += doc.data().toString() + '\n';
-    });
-
-    // Get local path
-    final directory = await getApplicationDocumentsDirectory();
-    final path = directory.path;
-
-    // Create a reference to the file location
-    final file = File('$path/data.txt');
-
-    // Write data to the file
-    await file.writeAsString(data);
-
-    print('Data from Firestore: $data');
-
-    // Update the state to reflect the data
-    setState(() {
-      _data = data;
-    });
+      setState(() {
+        _data = data;
+      });
+    } catch (e) {
+      print('An error occurred: $e');
+    }
   }
 
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(),
     body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(_data),
-        ],
+      child: ListView.builder(
+        itemCount: _data.length,
+        itemBuilder: (context, index) {
+          return ElevatedButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('${_data[index]['type']}'),
+                    content: Text('Amount: \$${_data[index]['amount']} \nDescription: ${_data[index]['description']} \nType: ${_data[index]['expenseIncomeType']}'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('Close'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+              children: <Widget>[
+                Text('${_data[index]['type']} \$${_data[index]['amount']}'),
+                Icon(
+                  _data[index]['expenseIncomeType'] == 'Income' ? Icons.arrow_upward : Icons.arrow_downward,
+                  color: _data[index]['expenseIncomeType'] == 'Income' ? Colors.green : Colors.red,
+                ),
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromARGB(172, 33, 149, 243),  
+              foregroundColor: Colors.white, 
+            ),
+          );
+        },
       ),
     ),
   );
 }
-
 }

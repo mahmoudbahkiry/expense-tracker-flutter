@@ -167,7 +167,6 @@ class MyBody extends StatelessWidget {
         body: Column(
           children: <Widget>[
             Expanded(child: MyPieChart(),),
-            Expanded(child: TransactionList(),),
             Expanded(child: FetchData(),),
           ],
         ),
