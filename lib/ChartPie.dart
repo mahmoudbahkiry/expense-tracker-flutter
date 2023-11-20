@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:expense_tracker_app/TransactionHistory.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyPieChart extends StatefulWidget {
   @override
@@ -8,26 +8,54 @@ class MyPieChart extends StatefulWidget {
 }
 
 class _MyPieChartState extends State<MyPieChart> {
-  List<Map<String, dynamic>> Newdata = [] ;
   Map<String, double> dataMap = {};
+  List<Map<String, dynamic>> _data = [];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    convertData();
+  void initState() {
+    super.initState();
+    GetInfo();
   }
 
-  void convertData() {
-    Map<String, double> tempMap = {};
-    for (var item in Newdata) {
-      if (item['type'] is String && item['amount'] is num) {
-        tempMap[item['type']] = item['amount'].toDouble();
+  Future<void> GetInfo() async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+
+      QuerySnapshot querySnapshot = await firestore.collection('Expense Pro').get();
+      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+      List<Map<String, dynamic>> data = [];
+      documents.forEach((doc) {
+        Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
+        if (docData.containsKey('type') && docData.containsKey('amount')) {
+          data.add(docData);
+        }
+      });
+
+      _data = data;
+      convertData();
+    } catch (e) {
+      print('An error occurred: $e');
+    }
+  }
+
+void convertData() {
+  Map<String, double> tempMap = {};
+  for (var item in _data) {
+    if (item['type'] is String && item['amount'] is String) {
+      double amount = double.tryParse(item['amount']) ?? 0.0;
+      if (tempMap.containsKey(item['type'])) {
+        // Checking if the value is not null
+        tempMap[item['type']] = (tempMap[item['type']] ?? 0) + amount;
+      } else {
+        tempMap[item['type']] = amount;
       }
     }
-    setState(() {
-      dataMap = tempMap;
-    });
   }
+  setState(() {
+    dataMap = tempMap;
+  });
+}
 
   List<Color> colorList = [
     Colors.blue,
@@ -42,12 +70,14 @@ class _MyPieChartState extends State<MyPieChart> {
     Color.fromARGB(255, 172, 161, 160),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(height: 50), // Add a SizedBox widget at the top
+        if (dataMap.isNotEmpty)
           PieChart(
             dataMap: dataMap,
             animationDuration: Duration(milliseconds: 800),
@@ -57,7 +87,6 @@ class _MyPieChartState extends State<MyPieChart> {
             initialAngleInDegree: 0,
             chartType: ChartType.ring,
             ringStrokeWidth: 30,
-            centerText: "Expenses",
             legendOptions: LegendOptions(
               showLegendsInRow: false,
               legendPosition: LegendPosition.right,
@@ -75,8 +104,8 @@ class _MyPieChartState extends State<MyPieChart> {
               decimalPlaces: 1,
             ),
           ),
-        ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 }

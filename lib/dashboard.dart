@@ -166,7 +166,7 @@ class MyBody extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: Column(
           children: <Widget>[
-            Expanded(child: MyPieChart(),),
+            Expanded(child: MyPieChart()),
             Expanded(child: FetchData(),),
           ],
         ),

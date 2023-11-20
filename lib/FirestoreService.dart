@@ -8,8 +8,7 @@ class FetchData extends StatefulWidget {
 
 class _MyWidgetState extends State<FetchData> {
   List<Map<String, dynamic>> _data = [];
-  
-
+  List<Map<String, dynamic>> get data => _data;
 
 
   @override
