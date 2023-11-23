@@ -12,12 +12,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String dropdownValue = "Not yet written";
+  int _selectedIndex = 0;
+
+  static const List<Widget> _pages = <Widget>[
+    Icon(
+      Icons.home,
+      size: 150,
+    ),
+    Icon(
+      Icons.bar_chart,
+      size: 150,
+    ),
+    Icon(
+      Icons.person,
+      size: 150,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        body: Center(child: _pages.elementAt(_selectedIndex)),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text("Expense Pro"),
@@ -30,8 +47,36 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.green,
           child: const Icon(Icons.add),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedFontSize: 15,
+          selectedIconTheme: const IconThemeData(color: Colors.green, size: 30),
+          selectedItemColor: Colors.green,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart),
+              label: 'Chart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   void showIncomeExpenseDialog() {
