@@ -1,73 +1,8 @@
-import 'package:expense_tracker_app/views/Login_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+// signup_screen.dart
+import 'package:expense_tracker_app/controller/signup_controller.dart'; // Import the SignUpController
+import 'package:expense_tracker_app/views/Login_view.dart'; // Import the Login view
+import 'package:flutter/material.dart'; // Import Flutter material library
 
-// SignUpService class handles user registration and authentication
-class SignUpService {
-  // Checks if the user's email is verified
-  Future<bool> isEmailVerified(User? user) async {
-    if (user == null) return false;
-    await user.reload();
-    user = FirebaseAuth.instance.currentUser;
-    return user?.emailVerified ?? false;
-  }
-
-  // Signs up a new user with provided credentials
-  Future<void> signUp(
-    String email, String password, String firstName, String lastName, BuildContext context) async {
-    try {
-      // Creates a new user account
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-
-      // Sends email verification to the new user
-      User? user = FirebaseAuth.instance.currentUser;
-      await user?.sendEmailVerification();
-
-      // Shows a message about the verification email
-      showError(context, "A verification email has been sent. Please check your email.");
-
-      // Checks if the email is verified before allowing sign-in
-      if (!await isEmailVerified(user)) {
-        showError(context, "Please verify your email before signing in.");
-        return;
-      }
-
-      // Shows a success message
-      showError(context, "A verification email has been sent. Please check your email.");
-    } on FirebaseAuthException catch (e) {
-      // Handles authentication exceptions
-      handleAuthException(context, e);
-    } catch (e) {
-      // Handles unexpected errors
-      showError(context, "An unexpected error occurred. Please try again later.");
-    }
-  }
-
-  // Displays an error message using a SnackBar
-  void showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  // Handles authentication exceptions and displays appropriate error messages
-  void handleAuthException(BuildContext context, FirebaseAuthException e) {
-    String errorMessage = '';
-    if (e.code == "invalid-email") {
-      errorMessage = "Invalid email format";
-    } else if (e.code == "user-disabled") {
-      errorMessage = "User account is disabled";
-    } else if (e.code == "email-already-in-use") {
-      errorMessage = "This email is already in use by another account";
-    } else {
-      errorMessage = "An error occurred. Please try again later.";
-    }
-    showError(context, errorMessage);
-  }
-}
-
-// SignUp class is the main widget for the sign-up screen
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -76,17 +11,14 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  // Controllers for input fields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  // SignUpService instance for handling user registration
-  final SignUpService signUpService = SignUpService();
+  final SignUpController signUpController = SignUpController(); // Create an instance of the SignUpController
 
   @override
   void dispose() {
-    // Dispose of controllers when the widget is disposed
     _emailController.dispose();
     _passwordController.dispose();
     _firstNameController.dispose();
@@ -94,19 +26,18 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 
-  // Handles the sign-up process
   void signUp() async {
-    // Checks if all required fields are filled
+    // Check if all required fields are not empty
     if (_emailController.text.trim().isEmpty ||
         _passwordController.text.trim().isEmpty ||
         _firstNameController.text.trim().isEmpty ||
         _lastNameController.text.trim().isEmpty) {
-      signUpService.showError(context, "Please fill in all the required fields");
+      signUpController.showError(context, "Please fill in all the required fields");
       return;
     }
 
-    // Attempts to sign up the user
-    await signUpService.signUp(
+    // Attempt to sign up the user using the SignUpController
+    await signUpController.signUp(
       _emailController.text,
       _passwordController.text,
       _firstNameController.text,
@@ -115,7 +46,6 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Widget for reusable text fields
   Widget buildTextField({
     TextEditingController? controller,
     String hintText = '',
@@ -148,7 +78,7 @@ class _SignUpState extends State<SignUp> {
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              // Validates email format
+              // Validate email format if it's an email field
               if (isEmailField) {
                 if (value == null ||
                     !value.contains('@') ||
@@ -156,7 +86,7 @@ class _SignUpState extends State<SignUp> {
                   return 'Please enter a valid email address';
                 }
               }
-              // Validates password length
+              // Validate password length if it's a password field
               if (isPassword) {
                 if (value == null || value.length < 6) {
                   return 'Minimum required characters: 6';
@@ -204,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 30),
-                // Reusable text field for email
+                // Reusable method to build email input field
                 buildTextField(
                   controller: _emailController,
                   hintText: 'Email',
@@ -212,21 +142,21 @@ class _SignUpState extends State<SignUp> {
                   keyboardType: TextInputType.emailAddress,
                   isEmailField: true,
                 ),
-                // Reusable text field for first name
+                // Reusable method to build first name input field
                 buildTextField(
                   controller: _firstNameController,
                   hintText: 'First name',
                   prefixIcon: const Icon(Icons.person, color: Colors.black),
                   keyboardType: TextInputType.text,
                 ),
-                // Reusable text field for last name
+                // Reusable method to build last name input field
                 buildTextField(
                   controller: _lastNameController,
                   hintText: 'Last name',
                   prefixIcon: const Icon(Icons.person, color: Colors.black),
                   keyboardType: TextInputType.text,
                 ),
-                // Reusable text field for password
+                // Reusable method to build password input field
                 buildTextField(
                   controller: _passwordController,
                   hintText: 'Password',
@@ -234,9 +164,9 @@ class _SignUpState extends State<SignUp> {
                   obscureText: true,
                   isPassword: true,
                 ),
-                // Sign-up button
+                // Reusable method to build sign-up button
                 buildSignUpButton(),
-                // Sign-in link
+                // Reusable method to build sign-in link
                 buildSignInText(context),
               ],
             ),
@@ -246,7 +176,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Widget for the sign-up button
+  // Reusable method to build sign-up button
   Widget buildSignUpButton() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -275,7 +205,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  // Widget for the sign-in link
+  // Reusable method to build sign-in link
   Widget buildSignInText(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),

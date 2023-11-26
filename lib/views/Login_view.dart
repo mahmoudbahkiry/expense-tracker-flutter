@@ -1,64 +1,9 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// login_screen.dart
+import 'package:expense_tracker_app/controller/login_controller.dart'; // Import the login controller
+import 'package:expense_tracker_app/views/Signup_view.dart'; // Import the SignUp view
+import 'package:flutter/material.dart'; // Import Flutter material library
+import 'forget_pass.dart'; // Import the ForgetPass view
 
-import 'package:expense_tracker_app/views/Home_view.dart';
-import 'package:expense_tracker_app/views/Signup_view.dart';
-import 'package:expense_tracker_app/views/forget_pass.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
-// AuthenticationService class handles user authentication
-class AuthenticationService {
-  // Checks if the user's email is verified
-  Future<bool> isEmailVerified(User? user) async {
-    if (user == null) return false;
-    await user.reload();
-    user = FirebaseAuth.instance.currentUser;
-    return user?.emailVerified ?? false;
-  }
-
-  // Sign in user with email and password
-  Future<void> signIn(String email, String password, BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-
-      // Check if email is verified
-      bool isVerified = await isEmailVerified(FirebaseAuth.instance.currentUser);
-
-      if (!isVerified) {
-        showError(context, "Your email is not verified. Please verify your email.");
-      } else {
-        // Navigate to the Home page on successful login
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
-      }
-    } on FirebaseAuthException catch (e) {
-      // Handle authentication exceptions
-      handleAuthException(context, e);
-    }
-  }
-
-  // Display an error message using a SnackBar
-  void showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  // Handle authentication exceptions and show appropriate error messages
-  void handleAuthException(BuildContext context, FirebaseAuthException e) {
-    String errorMessage = '';
-    switch (e.code) {
-      case 'invalid-email':
-        errorMessage = 'The email address is not valid.';
-        break;
-      default:
-        errorMessage = 'Incorrect email or password.';
-    }
-    showError(context, errorMessage);
-  }
-}
-
-// LoginScreen class is the main widget for the login screen
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -67,30 +12,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Controllers for email and password input fields
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  // AuthenticationService instance for handling authentication
-  final AuthenticationService authService = AuthenticationService();
+  final LoginController loginController = LoginController(); // Create an instance of the LoginController
 
   @override
   void dispose() {
-    // Dispose of controllers when the widget is disposed
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
 
-  // Sign in button callback
   void _signIn() async {
     // Check if email and password are not empty
     if (emailController.text.trim().isEmpty || passwordController.text.trim().isEmpty) {
-      authService.showError(context, "Please enter both an email and a password");
+      loginController.showError(context, "Please enter both an email and a password");
       return;
     }
 
-    // Attempt to sign in with provided credentials
-    await authService.signIn(emailController.text, passwordController.text, context);
+    // Attempt to sign in with provided credentials using the login controller
+    await loginController.signIn(emailController.text, passwordController.text, context);
   }
 
   @override
@@ -109,9 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Application logo
                 Image.asset('images/undraw_Mobile_login_re_9ntv.png', height: 140),
-                // Sign-in title
                 const Text(
                   'Sign In',
                   style: TextStyle(
@@ -119,13 +58,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                // Description
                 const Text(
                   'Your money, your rules',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 30),
-                // Email input field
+                // Reusable method to build email input field
                 buildInputField(
                   isEmailField: true,
                   controller: emailController,
@@ -134,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 10),
-                // Password input field
+                // Reusable method to build password input field
                 buildInputField(
                   isPassword: true,
                   controller: passwordController,
@@ -143,13 +81,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 10),
-                // Sign-in button
+                // Reusable method to build sign-in button
                 buildSignInButton(),
                 const SizedBox(height: 10),
-                // Sign-up link
+                // Reusable method to build sign-up link
                 buildSignUpText(context),
                 const SizedBox(height: 10),
-                // Forgot password link
+                // Reusable method to build forgot password link
                 ForgetPassText(context),
               ],
             ),
@@ -159,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Widget for reusable input field
+  // Reusable method to build input fields
   Widget buildInputField({
     TextEditingController? controller,
     String hintText = '',
@@ -196,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Widget for Sign-in button
+  // Reusable method to build sign-in button
   Widget buildSignInButton() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -223,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Widget for Sign-up link
+  // Reusable method to build sign-up link
   Widget buildSignUpText(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -240,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           GestureDetector(
             onTap: () {
-              // Navigate to the SignUp page when "Sign up" is clicked
+              // Navigate to the SignUp screen when "Sign Up" is clicked
               Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()));
             },
             child: const Text(
@@ -258,10 +196,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// Widget for "Forgot password?" link
+// Reusable method to build forgot password link
 Widget ForgetPassText(BuildContext context) {
   return GestureDetector(
     onTap: () {
+      // Navigate to the ForgetPass screen when "Forgot password" is clicked
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ForgetPass()),

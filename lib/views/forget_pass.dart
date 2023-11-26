@@ -1,76 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:expense_tracker_app/controller/forget_password_controller.dart';
 import 'package:flutter/material.dart';
 
-// AuthOperation is an abstract class defining an authentication operation interface
-abstract class AuthOperation {
-  Future<void> execute(String email, BuildContext context);
-}
 
-// ForgetPasswordService class implements AuthOperation and handles password reset functionality
-class ForgetPasswordService implements AuthOperation {
-  final TextEditingController emailController = TextEditingController();
-
-  @override
-  Future<void> execute(String email, BuildContext context) async {
-    try {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
-
-      String errorMessage = '';
-      bool isVerified = await isEmailVerified();
-
-      if (!isVerified) {
-        errorMessage = 'Verify email before you can reset the password';
-        showError(context, errorMessage);
-      } else {
-        await sendResetEmail(context);
-      }
-    } catch (e) {
-      showError(context, 'An unexpected error occurred. Please try again later.');
-    }
-  }
-
-  // Sends a password reset email
-  Future<void> sendResetEmail(BuildContext context) async {
-    try {
-      final email = emailController.text.trim();
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-
-      Navigator.of(context).pop(); // Close the loading dialog
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset email sent successfully.')),
-      );
-
-      // Optionally, you can navigate back to the previous screen or perform any other actions.
-    } on FirebaseAuthException catch (e) {
-      String errorMessage = (e.code == 'invalid-email') ? 'Invalid email' : 'Incorrect email';
-
-      Navigator.of(context).pop(); // Close the loading dialog
-
-      showError(context, errorMessage);
-    }
-  }
-
-  // Checks if the user's email is verified
-  Future<bool> isEmailVerified() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    await user?.reload(); // Reload user information from Firebase
-    user = FirebaseAuth.instance.currentUser; // Get the updated user
-    return user?.emailVerified ?? false; // Return whether email is verified or not
-  }
-
-  // Displays an error message using a SnackBar
-  void showError(BuildContext context, String message) {
-    Navigator.of(context).pop(); // Close the loading dialog
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-}
-
-// ForgetPass is the main widget for the "Forgot Password" screen
 class ForgetPass extends StatefulWidget {
   const ForgetPass({Key? key}) : super(key: key);
 
@@ -79,13 +10,11 @@ class ForgetPass extends StatefulWidget {
 }
 
 class _ForgetPassState extends State<ForgetPass> {
-  // Instance of ForgetPasswordService for handling password reset
-  final ForgetPasswordService passwordService = ForgetPasswordService();
+  final ForgetPasswordController passwordController = ForgetPasswordController();
 
   @override
   void dispose() {
-    // Dispose of controllers when the widget is disposed
-    passwordService.emailController.dispose();
+    passwordController.emailController.dispose();
     super.dispose();
   }
 
@@ -139,7 +68,7 @@ class _ForgetPassState extends State<ForgetPass> {
                 width: 300,
                 child: TextField(
                   textAlign: TextAlign.center,
-                  controller: passwordService.emailController,
+                  controller: passwordController.emailController,
                   decoration: const InputDecoration(
                     hintText: 'Type your email ..',
                     focusedBorder: OutlineInputBorder(
@@ -155,7 +84,7 @@ class _ForgetPassState extends State<ForgetPass> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  passwordService.execute(passwordService.emailController.text, context);
+                  passwordController.execute(context);
                 },
                 style: ButtonStyle(
                   backgroundColor:
