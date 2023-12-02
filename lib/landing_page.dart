@@ -1,4 +1,4 @@
-
+// ignore_for_file: deprecated_member_use
 
 import 'package:expense_tracker_project/views/Signup_view.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
               const Padding(padding: EdgeInsets.all(16)),
               const Text(
                 'Your road to financial responsibility starts here ',
-                style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
               const Padding(padding: EdgeInsets.only(bottom: 20)),
@@ -48,12 +48,16 @@ class _LandingPageState extends State<LandingPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 22, 182, 158),
                 ),
-                child: const Text('Get Started' , style: TextStyle(
-                letterSpacing: .6,
-                color: Colors.white,
-                fontSize: 17,),
-              ),
-          )],
+                child: const Text(
+                  'Get Started',
+                  style: TextStyle(
+                    letterSpacing: .6,
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

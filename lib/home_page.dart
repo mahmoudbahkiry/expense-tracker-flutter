@@ -1,8 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 
 class HomePage2 extends StatefulWidget {
   const HomePage2({super.key});
@@ -17,31 +18,20 @@ class _HomePage2State extends State<HomePage2> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = <Widget>[
-    const Icon(
-      Icons.home,
-      size: 150,
-    ),
+    PageHome(),
     const Icon(
       Icons.bar_chart,
       size: 150,
     ),
-    ProfilePage(),
+    PageProfile(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
         body: Center(child: _pages.elementAt(_selectedIndex)),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showIncomeExpenseDialog();
-          },
-          backgroundColor: const Color.fromARGB(255, 22, 182, 158),
-          child: const Icon(Icons.add),
-        ),
         bottomNavigationBar: BottomNavigationBar(
           selectedFontSize: 15,
           selectedIconTheme: const IconThemeData(
@@ -70,15 +60,37 @@ class _HomePage2State extends State<HomePage2> {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(
+      () {
+        _selectedIndex = index;
+      },
+    );
+  }
+}
+
+class PageHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            margin: const EdgeInsets.all(16.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                _showAlertDialog(context);
+              },
+              backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+              child: const Icon(Icons.add),
+            ),
+          )),
+    );
   }
 
-  void showIncomeExpenseDialog() {
+  void _showAlertDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return AlertDialog(
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
@@ -87,18 +99,11 @@ class _HomePage2State extends State<HomePage2> {
           ),
         );
       },
-    ).then((value) {
-      if (value != null) {
-        setState(() {
-          dropdownValue = value;
-          devtools.log(dropdownValue.toString());
-        });
-      }
-    });
+    );
   }
 }
 
-class ProfilePage extends StatelessWidget {
+class PageProfile extends StatelessWidget {
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
   }
