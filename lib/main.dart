@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ), // ThemeData
-      home: SplashScreen(),
+      home:const Auth(),
     ); // MaterialApp
  }
 }
