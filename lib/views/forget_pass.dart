@@ -1,17 +1,16 @@
-
 import 'package:expense_tracker_project/controller/forget_password_controller.dart';
 import 'package:flutter/material.dart';
 
-
 class ForgetPass extends StatefulWidget {
-  const ForgetPass({Key? key}) : super(key: key);
+  const ForgetPass({super.key});
 
   @override
   State<ForgetPass> createState() => _ForgetPassState();
 }
 
 class _ForgetPassState extends State<ForgetPass> {
-  final ForgetPasswordController passwordController = ForgetPasswordController();
+  final ForgetPasswordController passwordController =
+      ForgetPasswordController();
 
   @override
   void dispose() {
@@ -39,7 +38,8 @@ class _ForgetPassState extends State<ForgetPass> {
               ),
               Align(
                 alignment: Alignment.topCenter,
-                child: Image.asset('images/undraw_Forgot_password_re_hxwm.png', height: 200),
+                child: Image.asset('images/undraw_Forgot_password_re_hxwm.png',
+                    height: 200),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -73,7 +73,8 @@ class _ForgetPassState extends State<ForgetPass> {
                   decoration: const InputDecoration(
                     hintText: 'Type your email ..',
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromARGB(255, 22, 182, 158)),
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 22, 182, 158)),
                     ),
                     border: OutlineInputBorder(),
                   ),
@@ -88,9 +89,10 @@ class _ForgetPassState extends State<ForgetPass> {
                   passwordController.execute(context);
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(const Color.fromARGB(75, 0, 255, 229)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color.fromARGB(75, 0, 255, 229)),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                 ),
                 child: const Text('Send'),
               ),

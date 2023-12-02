@@ -1,10 +1,11 @@
-
 import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
+import 'package:expense_tracker_project/views/forget_pass.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 class HomePage2 extends StatefulWidget {
-  const HomePage2({Key? key}) : super(key: key);
+  const HomePage2({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -15,23 +16,21 @@ class _HomePage2State extends State<HomePage2> {
   String dropdownValue = "Not yet written";
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    Icon(
+  final List<Widget> _pages = <Widget>[
+    const Icon(
       Icons.home,
       size: 150,
     ),
-    Icon(
+    const Icon(
       Icons.bar_chart,
       size: 150,
     ),
-    Icon(
-      Icons.person,
-      size: 150,
-    ),
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -39,19 +38,20 @@ class _HomePage2State extends State<HomePage2> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text("Expense Pro"),
-          backgroundColor: Colors.green,
+          backgroundColor: const Color.fromARGB(255, 22, 182, 158),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showIncomeExpenseDialog();
           },
-          backgroundColor: Colors.green,
+          backgroundColor: const Color.fromARGB(255, 22, 182, 158),
           child: const Icon(Icons.add),
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedFontSize: 15,
-          selectedIconTheme: const IconThemeData(color: Colors.green, size: 30),
-          selectedItemColor: Colors.green,
+          selectedIconTheme: const IconThemeData(
+              color: Color.fromARGB(255, 22, 182, 158), size: 30),
+          selectedItemColor: const Color.fromARGB(255, 22, 182, 158),
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -100,5 +100,61 @@ class _HomePage2State extends State<HomePage2> {
         });
       }
     });
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const ForgetPass(),
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder: (_, a, __, c) =>
+                        FadeTransition(opacity: a, child: c),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+              ),
+              child: const Text('Change Password',
+                  style: TextStyle(
+                    letterSpacing: .6,
+                    color: Colors.white,
+                    fontSize: 17,
+                  )),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                _signOut();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+              ),
+              child: const Text('Sign Out',
+                  style: TextStyle(
+                    letterSpacing: .6,
+                    color: Colors.white,
+                    fontSize: 17,
+                  )),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
