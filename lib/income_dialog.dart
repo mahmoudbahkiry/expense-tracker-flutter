@@ -15,7 +15,6 @@ class _IncomeDialogState extends State<IncomeDialog> {
   String dropdownvalue = 'Salary';
   String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-
   // List of items in the dropdown button
   var items = [
     'Salary',
@@ -112,13 +111,19 @@ class _IncomeDialogState extends State<IncomeDialog> {
             devtools.log(_amountIncome.text.toString());
             devtools.log(_descriptionIncome.text.toString());
           },
-          child: const Text("Add"),
+          child: const Text(
+            "Add",
+            style: TextStyle(color: Color.fromARGB(255, 22, 182, 158)),
+          ),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text("Cancel"),
+          child: const Text(
+            "Cancel",
+            style: TextStyle(color: Color.fromARGB(255, 22, 182, 158)),
+          ),
         ),
       ],
     );

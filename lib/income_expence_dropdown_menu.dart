@@ -1,4 +1,3 @@
-
 import 'package:expense_tracker_project/expense_dialog.dart';
 import 'package:expense_tracker_project/income_dialog.dart';
 import 'package:flutter/material.dart';
@@ -63,14 +62,20 @@ class _IncomeExpenseDropdownMenuState extends State<IncomeExpenseDropdownMenu> {
               showIncomeDialog();
             }
           },
-          child: const Text("Ok"),
+          child: const Text(
+            "Ok",
+            style: TextStyle(color: Color.fromARGB(255, 22, 182, 158)),
+          ),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
             devtools.log(dropdownValue.toString());
           },
-          child: const Text("Cancel"),
+          child: const Text(
+            "Cancel",
+            style: TextStyle(color: Color.fromARGB(255, 22, 182, 158)),
+          ),
         ),
       ],
     );

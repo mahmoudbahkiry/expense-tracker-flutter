@@ -1,4 +1,3 @@
-
 import 'package:expense_tracker_project/controller/login_controller.dart';
 import 'package:expense_tracker_project/views/Signup_view.dart';
 import 'package:flutter/material.dart'; // Import Flutter material library
@@ -14,7 +13,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final LoginController loginController = LoginController(); // Create an instance of the LoginController
+  final LoginController loginController =
+      LoginController(); // Create an instance of the LoginController
 
   @override
   void dispose() {
@@ -25,13 +25,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _signIn() async {
     // Check if email and password are not empty
-    if (emailController.text.trim().isEmpty || passwordController.text.trim().isEmpty) {
-      loginController.showError(context, "Please enter both an email and a password");
+    if (emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty) {
+      loginController.showError(
+          context, "Please enter both an email and a password");
       return;
     }
 
     // Attempt to sign in with provided credentials using the login controller
-    await loginController.signIn(emailController.text, passwordController.text, context);
+    await loginController.signIn(
+        emailController.text, passwordController.text, context);
   }
 
   @override
@@ -50,7 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('images/undraw_Mobile_login_re_9ntv.png', height: 140),
+                Image.asset('images/undraw_Mobile_login_re_9ntv.png',
+                    height: 140),
                 const Text(
                   'Sign In',
                   style: TextStyle(
@@ -179,7 +183,8 @@ class _LoginScreenState extends State<LoginScreen> {
           GestureDetector(
             onTap: () {
               // Navigate to the SignUp screen when "Sign Up" is clicked
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const SignUp()));
             },
             child: const Text(
               'Sign up',
