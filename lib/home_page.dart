@@ -35,11 +35,6 @@ class _HomePage2State extends State<HomePage2> {
       onWillPop: () async => false,
       child: Scaffold(
         body: Center(child: _pages.elementAt(_selectedIndex)),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text("Expense Pro"),
-          backgroundColor: const Color.fromARGB(255, 22, 182, 158),
-        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showIncomeExpenseDialog();
