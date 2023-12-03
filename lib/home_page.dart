@@ -6,6 +6,53 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/ChartPie.dart';
 import 'package:expense_tracker_project/FirestoreService.dart';
 
+class PageHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Expanded(child: MyPieChart()),
+              Expanded(child: FetchData(),),
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              margin: const EdgeInsets.all(16.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  _showAlertDialog(context);
+                },
+                backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+                child: const Icon(Icons.add),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return const IncomeExpenseDropdownMenu();
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
 class HomePage2 extends StatefulWidget {
   const HomePage2({Key? key}) : super(key: key);
 
@@ -18,15 +65,7 @@ class _HomePage2State extends State<HomePage2> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = <Widget>[
-    Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: <Widget>[
-          Expanded(child: MyPieChart()),
-          Expanded(child: FetchData(),),
-        ],
-      ),
-    ),
+    PageHome(),
     const Icon(
       Icons.bar_chart,
       size: 150,
@@ -85,42 +124,6 @@ class _HomePage2State extends State<HomePage2> {
   }
 }
 
-
-class PageHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Align(
-        alignment: Alignment.bottomRight,
-        child: Container(
-          margin: const EdgeInsets.all(16.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              _showAlertDialog(context);
-            },
-            backgroundColor: const Color.fromARGB(255, 22, 182, 158),
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return const IncomeExpenseDropdownMenu();
-            },
-          ),
-        );
-      },
-    );
-  }
-}
 
 class PageProfile extends StatelessWidget {
   Future<void> _signOut() async {
