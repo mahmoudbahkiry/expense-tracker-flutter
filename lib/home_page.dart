@@ -1,23 +1,32 @@
-// ignore_for_file: deprecated_member_use
+
 import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_tracker_project/ChartPie.dart';
+import 'package:expense_tracker_project/FirestoreService.dart';
 
 class HomePage2 extends StatefulWidget {
-  const HomePage2({super.key});
+  const HomePage2({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomePage2State createState() => _HomePage2State();
 }
 
 class _HomePage2State extends State<HomePage2> {
-  String dropdownValue = "Not yet written";
+  User? _user;
   int _selectedIndex = 0;
 
   final List<Widget> _pages = <Widget>[
-    PageHome(),
+    Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: <Widget>[
+          Expanded(child: MyPieChart()),
+          Expanded(child: FetchData(),),
+        ],
+      ),
+    ),
     const Icon(
       Icons.bar_chart,
       size: 150,
@@ -27,14 +36,25 @@ class _HomePage2State extends State<HomePage2> {
 
   @override
   Widget build(BuildContext context) {
+    _user = FirebaseAuth.instance.currentUser;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: _user != null
+                ? Text('Signed in as ${_user!.email}', style: TextStyle(fontSize: 12),)
+                : Container(),
+          ),
+        ),
         body: Center(child: _pages.elementAt(_selectedIndex)),
         bottomNavigationBar: BottomNavigationBar(
           selectedFontSize: 15,
           selectedIconTheme: const IconThemeData(
-              color: Color.fromARGB(255, 22, 182, 158), size: 30),
+            color: Color.fromARGB(255, 22, 182, 158),
+            size: 30,
+          ),
           selectedItemColor: const Color.fromARGB(255, 22, 182, 158),
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: const <BottomNavigationBarItem>[
@@ -59,30 +79,30 @@ class _HomePage2State extends State<HomePage2> {
   }
 
   void _onItemTapped(int index) {
-    setState(
-      () {
-        _selectedIndex = index;
-      },
-    );
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }
+
 
 class PageHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Align(
-          alignment: Alignment.bottomRight,
-          child: Container(
-            margin: const EdgeInsets.all(16.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                _showAlertDialog(context);
-              },
-              backgroundColor: const Color.fromARGB(255, 22, 182, 158),
-              child: const Icon(Icons.add),
-            ),
-          )),
+        alignment: Alignment.bottomRight,
+        child: Container(
+          margin: const EdgeInsets.all(16.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              _showAlertDialog(context);
+            },
+            backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+            child: const Icon(Icons.add),
+          ),
+        ),
+      ),
     );
   }
 
@@ -119,7 +139,7 @@ class PageProfile extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Color.fromARGB(255, 22, 182, 158),
-                  Color.fromARGB(255, 22, 182, 158)
+                  Color.fromARGB(255, 22, 182, 158),
                 ],
               ),
             ),

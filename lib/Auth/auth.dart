@@ -11,15 +11,21 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomePage2();
-          } else {
-            return const SplashScreen();
-          }
-        },
+  stream: FirebaseAuth.instance.authStateChanges(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      // Show a loading indicator or splash screen while checking authentication state.
+      return SplashScreen();
+    } else if (snapshot.hasData && snapshot.data!.emailVerified) {
+      // User is signed in and email is verified.
+      return const HomePage2();
+    } else {
+      // User is not signed in or email is not verified.
+      return SplashScreen();
+    }
+  },
       ),
-    );
-  }
+);
+
+}
 }
