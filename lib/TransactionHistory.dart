@@ -9,9 +9,6 @@ class FetchData extends StatefulWidget {
 class _MyWidgetState extends State<FetchData> {
   List<Map<String, dynamic>> _data = [];
   
-
-
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -79,7 +76,7 @@ Widget build(BuildContext context) {
               ],
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(172, 33, 149, 243),  
+              backgroundColor: Color.fromARGB(255, 22, 182, 158),  
               foregroundColor: Colors.white, 
             ),
           );

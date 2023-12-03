@@ -1,4 +1,3 @@
-
 import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +12,13 @@ class PageHome extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              Expanded(child: MyPieChart()),
-              Expanded(child: FetchData(),),
-            ],
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/dashpic.jpg'), 
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomRight,
@@ -31,6 +32,12 @@ class PageHome extends StatelessWidget {
                 child: const Icon(Icons.add),
               ),
             ),
+          ),
+          Column(
+            children: <Widget>[
+              Expanded(child: MyPieChart()),
+              Expanded(child: FetchData()),
+            ],
           ),
         ],
       ),
@@ -124,7 +131,6 @@ class _HomePage2State extends State<HomePage2> {
   }
 }
 
-
 class PageProfile extends StatelessWidget {
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
@@ -136,14 +142,10 @@ class PageProfile extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(255, 22, 182, 158),
-                  Color.fromARGB(255, 22, 182, 158),
-                ],
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/dashpic.jpg'), 
+                fit: BoxFit.cover,
               ),
             ),
           ),

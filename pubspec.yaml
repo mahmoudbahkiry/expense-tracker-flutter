@@ -85,8 +85,11 @@ flutter:
     - images/john-new.jpg
     - images/undraw_my_app_re_gxtj.png
     - images/blakk-logo.jpg
-    
-  
+    - images/homepic.jpg
+    - images/profilepic.jpeg
+    - images/profileback.png 
+    - images/profilepicture.png 
+    - images/dashpic.jpg
      
 
   # An image asset can refer to one or more resolution-specific "variants", see
