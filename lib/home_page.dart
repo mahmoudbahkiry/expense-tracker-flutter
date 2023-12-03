@@ -18,10 +18,6 @@ class _HomePage2State extends State<HomePage2> {
 
   final List<Widget> _pages = <Widget>[
     PageHome(),
-    const Icon(
-      Icons.bar_chart,
-      size: 150,
-    ),
     PageProfile(),
   ];
 
@@ -41,10 +37,6 @@ class _HomePage2State extends State<HomePage2> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Chart',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
