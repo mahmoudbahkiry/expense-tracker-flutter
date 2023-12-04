@@ -18,12 +18,12 @@ class _MyPieChartState extends State<MyPieChart> {
     GetInfo();
   }
 
-  Future<void> GetInfo() async {
-    try {
-      final firestore = FirebaseFirestore.instance;
-      String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+void GetInfo() {
+  try {
+    final firestore = FirebaseFirestore.instance;
+    String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-      QuerySnapshot querySnapshot = await firestore.collection('Expense Pro').where('userID', isEqualTo: uid).get();
+    firestore.collection('Expense Pro').where('userID', isEqualTo: uid).snapshots().listen((querySnapshot) {
       List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
       List<Map<String, dynamic>> data = [];
@@ -36,10 +36,11 @@ class _MyPieChartState extends State<MyPieChart> {
 
       _data = data;
       convertData();
-    } catch (e) {
-      print('An error occurred: $e');
-    }
+    });
+  } catch (e) {
+    print('An error occurred: $e');
   }
+}
 
 void convertData() {
   Map<String, double> tempMap = {};

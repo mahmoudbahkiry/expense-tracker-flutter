@@ -22,7 +22,7 @@ class _PageHomeState extends State<PageHome> {
     fetchData();
   }
 
-  Future<void> fetchData() async {
+Future<void> fetchData() async {
   try {
     final firestore = FirebaseFirestore.instance;
 
@@ -33,6 +33,7 @@ class _PageHomeState extends State<PageHome> {
       documents.forEach((doc) {
         Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
         if (docData.containsKey('type') && docData.containsKey('amount') && docData.containsKey('description') && docData.containsKey('expenseIncomeType')) {
+          docData['id'] = doc.id; // Store the document ID
           data.add(docData);
         }
       });
@@ -46,7 +47,9 @@ class _PageHomeState extends State<PageHome> {
   }
 }
 
-  @override
+// ...
+
+@override
 Widget build(BuildContext context) {
   return Scaffold(
     resizeToAvoidBottomInset: false,
@@ -70,11 +73,24 @@ Widget build(BuildContext context) {
                             content: Text('Amount: \$${_data[index]['amount']} \nDescription: ${_data[index]['description']} \nType: ${_data[index]['expenseIncomeType']}'),
                             actions: <Widget>[
                               TextButton(
+                              child: Text(
+                                'Delete',
+                                style: TextStyle(
+                                  color: Colors.red, 
+                                ),
+                              ),
+                                onPressed: () {
+                                  FirebaseFirestore.instance.collection('Expense Pro').doc(_data[index]['id']).delete(); 
+                                  Navigator.of(context).pop();
+                                },
+                                ),
+                                TextButton(
                                 child: Text('Close'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
                               ),
+                              
                             ],
                           );
                         },
@@ -116,6 +132,7 @@ Widget build(BuildContext context) {
     ),
   );
 }
+
 }
 
   void _showAlertDialog(BuildContext context) {
