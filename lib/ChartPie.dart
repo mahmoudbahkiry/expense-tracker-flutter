@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,8 +21,9 @@ class _MyPieChartState extends State<MyPieChart> {
   Future<void> GetInfo() async {
     try {
       final firestore = FirebaseFirestore.instance;
+      String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-      QuerySnapshot querySnapshot = await firestore.collection('Expense Pro').get();
+      QuerySnapshot querySnapshot = await firestore.collection('Expense Pro').where('userID', isEqualTo: uid).get();
       List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
       List<Map<String, dynamic>> data = [];
@@ -73,38 +75,58 @@ void convertData() {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    body: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(height: 50), // Add a SizedBox widget at the top
-        if (dataMap.isNotEmpty)
-          PieChart(
-            dataMap: dataMap,
-            animationDuration: Duration(milliseconds: 800),
-            chartLegendSpacing: 50,
-            chartRadius: MediaQuery.of(context).size.width / 2.9,
-            colorList: colorList,
-            initialAngleInDegree: 0,
-            chartType: ChartType.ring,
-            ringStrokeWidth: 30,
-            legendOptions: LegendOptions(
-              showLegendsInRow: false,
-              legendPosition: LegendPosition.right,
-              showLegends: true,
-              legendShape: BoxShape.circle,
-              legendTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            chartValuesOptions: ChartValuesOptions(
-              showChartValueBackground: true,
-              showChartValues: true,
-              showChartValuesInPercentage: false,
-              showChartValuesOutside: false,
-              decimalPlaces: 1,
+    body: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 25.0), 
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft:Radius.circular(50.0),
+          topRight: Radius.circular(50.0),
+          bottomLeft: Radius.circular(50.0), 
+          bottomRight: Radius.circular(50.0), 
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.green, Colors.blue], 
             ),
           ),
-      ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 50), 
+              if (dataMap.isNotEmpty)
+                PieChart(
+                  dataMap: dataMap,
+                  animationDuration: Duration(milliseconds: 800),
+                  chartLegendSpacing: 50,
+                  chartRadius: MediaQuery.of(context).size.width / 2.9,
+                  colorList: colorList,
+                  initialAngleInDegree: 0,
+                  chartType: ChartType.ring,
+                  ringStrokeWidth: 30,
+                  legendOptions: LegendOptions(
+                    showLegendsInRow: false,
+                    legendPosition: LegendPosition.right,
+                    showLegends: true,
+                    legendShape: BoxShape.circle,
+                    legendTextStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  chartValuesOptions: ChartValuesOptions(
+                    showChartValueBackground: true,
+                    showChartValues: true,
+                    showChartValuesInPercentage: false,
+                    showChartValuesOutside: false,
+                    decimalPlaces: 1,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 }

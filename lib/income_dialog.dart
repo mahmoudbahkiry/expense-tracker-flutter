@@ -15,6 +15,7 @@ class _IncomeDialogState extends State<IncomeDialog> {
   String dropdownvalue = 'Salary';
   String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
+
   // List of items in the dropdown button
   var items = [
     'Salary',

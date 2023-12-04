@@ -90,8 +90,8 @@ flutter:
     - images/profileback.png 
     - images/profilepicture.png 
     - images/dashpic.jpg
-     
-
+    - images/money.png    
+    - images/flower.png   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

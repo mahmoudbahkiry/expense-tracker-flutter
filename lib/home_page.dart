@@ -1,3 +1,5 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,44 +7,116 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/ChartPie.dart';
 import 'package:expense_tracker_project/FirestoreService.dart';
 
-class PageHome extends StatelessWidget {
+class PageHome extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/dashpic.jpg'), 
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              margin: const EdgeInsets.all(16.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  _showAlertDialog(context);
-                },
-                backgroundColor: const Color.fromARGB(255, 22, 182, 158),
-                child: const Icon(Icons.add),
-              ),
-            ),
-          ),
-          Column(
-            children: <Widget>[
-              Expanded(child: MyPieChart()),
-              Expanded(child: FetchData()),
-            ],
-          ),
-        ],
-      ),
-    );
+  _PageHomeState createState() => _PageHomeState();
+}
+
+class _PageHomeState extends State<PageHome> {
+  List<Map<String, dynamic>> _data = [];
+  String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    @override
+  void initState() {
+    super.initState();
+    fetchData();
   }
+
+  Future<void> fetchData() async {
+  try {
+    final firestore = FirebaseFirestore.instance;
+
+    firestore.collection('Expense Pro').where('userID', isEqualTo: uid).snapshots().listen((querySnapshot) {
+      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+      List<Map<String, dynamic>> data = [];
+      documents.forEach((doc) {
+        Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
+        if (docData.containsKey('type') && docData.containsKey('amount') && docData.containsKey('description') && docData.containsKey('expenseIncomeType')) {
+          data.add(docData);
+        }
+      });
+
+      setState(() {
+        _data = data;
+      });
+    });
+  } catch (e) {
+    print('An error occurred: $e');
+  }
+}
+
+  @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    resizeToAvoidBottomInset: false,
+    body: Stack(
+      children: <Widget>[
+        Container(),
+        Column(
+          children: <Widget>[
+            Expanded(child: MyPieChart()),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _data.length,
+                itemBuilder: (context, index) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('${_data[index]['type']}'),
+                            content: Text('Amount: \$${_data[index]['amount']} \nDescription: ${_data[index]['description']} \nType: ${_data[index]['expenseIncomeType']}'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Close'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                      children: <Widget>[
+                        Text('${_data[index]['type']} \$${_data[index]['amount']}'),
+                        Icon(
+                          _data[index]['expenseIncomeType'] == 'Income' ? Icons.arrow_upward : Icons.arrow_downward,
+                          color: _data[index]['expenseIncomeType'] == 'Income' ? Colors.green : Colors.red,
+                        ),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 22, 182, 158),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            margin: const EdgeInsets.all(16.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                _showAlertDialog(context);
+              },
+              backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+              child: const Icon(Icons.add),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+}
 
   void _showAlertDialog(BuildContext context) {
     showDialog(
@@ -58,7 +132,7 @@ class PageHome extends StatelessWidget {
       },
     );
   }
-}
+
 
 class HomePage2 extends StatefulWidget {
   const HomePage2({Key? key}) : super(key: key);
@@ -131,6 +205,7 @@ class _HomePage2State extends State<HomePage2> {
   }
 }
 
+
 class PageProfile extends StatelessWidget {
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
@@ -142,13 +217,13 @@ class PageProfile extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/dashpic.jpg'), 
-                fit: BoxFit.cover,
-              ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('images/flower.png'), 
+              fit: BoxFit.cover,
             ),
           ),
+        ),
           Center(
             child: Card(
               elevation: 5.0,
