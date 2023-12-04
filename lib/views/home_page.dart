@@ -6,11 +6,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/views/ChartPie.dart';
 
+// Creating a StatefulWidget for the home page
 class PageHome extends StatefulWidget {
   @override
   _PageHomeState createState() => _PageHomeState();
 }
 
+// Defining the state of the StatefulWidget
 class _PageHomeState extends State<PageHome> {
   List<Map<String, dynamic>> _data = [];
   String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
@@ -21,22 +23,26 @@ class _PageHomeState extends State<PageHome> {
     fetchData();
   }
 
+ // Asynchronous function to fetch data from Firestore
 Future<void> fetchData() async {
   try {
     final firestore = FirebaseFirestore.instance;
 
+      // Listening for changes in the Firestore collection
     firestore.collection('Expense Pro').where('userID', isEqualTo: uid).snapshots().listen((querySnapshot) {
       List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
       List<Map<String, dynamic>> data = [];
       documents.forEach((doc) {
         Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
+        // Checking if the document has the required fields 
         if (docData.containsKey('type') && docData.containsKey('amount') && docData.containsKey('description') && docData.containsKey('expenseIncomeType')) {
           docData['id'] = doc.id; 
           data.add(docData);
         }
       });
 
+        // Updating the state of the list
       setState(() {
         _data = data;
       });
@@ -47,7 +53,7 @@ Future<void> fetchData() async {
 }
 
 
-
+  // Building the widget and scaffold for transaction list
 @override
 Widget build(BuildContext context) {
   return Scaffold(

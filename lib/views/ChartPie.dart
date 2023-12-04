@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Creating a StatefulWidget for the pie chart
 class MyPieChart extends StatefulWidget {
   @override
   _MyPieChartState createState() => _MyPieChartState();
 }
 
+// Defining the state of the StatefulWidget
 class _MyPieChartState extends State<MyPieChart> {
   Map<String, double> dataMap = {};
   List<Map<String, dynamic>> _data = [];
@@ -18,11 +20,13 @@ class _MyPieChartState extends State<MyPieChart> {
     GetInfo();
   }
 
+  // Function to fetch data from Firestore
 void GetInfo() {
   try {
     final firestore = FirebaseFirestore.instance;
     String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
+      // Listening for changes in the Firestore collection
     firestore.collection('Expense Pro').where('userID', isEqualTo: uid).snapshots().listen((querySnapshot) {
       List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
@@ -34,6 +38,7 @@ void GetInfo() {
         }
       });
 
+      // Updating the data list
       _data = data;
       convertData();
     });
@@ -42,6 +47,7 @@ void GetInfo() {
   }
 }
 
+  // Converting the data for the pie chart
 void convertData() {
   Map<String, double> tempMap = {};
   for (var item in _data) {
@@ -73,6 +79,7 @@ void convertData() {
     Color.fromARGB(255, 172, 161, 160),
   ];
 
+  // Building the widget and scaffold for the graph
 @override
 Widget build(BuildContext context) {
   return Scaffold(
