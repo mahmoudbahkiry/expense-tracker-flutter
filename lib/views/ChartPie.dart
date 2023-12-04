@@ -87,10 +87,10 @@ Widget build(BuildContext context) {
       padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 25.0), 
       child: ClipRRect(
         borderRadius: BorderRadius.only(
-          topLeft:Radius.circular(50.0),
+          topLeft: Radius.circular(50.0),
           topRight: Radius.circular(50.0),
-          bottomLeft: Radius.circular(50.0), 
-          bottomRight: Radius.circular(50.0), 
+          bottomLeft: Radius.circular(50.0),
+          bottomRight: Radius.circular(50.0),
         ),
         child: Container(
           decoration: BoxDecoration(
@@ -104,14 +104,6 @@ Widget build(BuildContext context) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(height: 50), 
-              Text(
-                'Expenses',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 0, 0, 0)
-                ),
-              ),
               if (dataMap.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.only(left: 20.0), 
