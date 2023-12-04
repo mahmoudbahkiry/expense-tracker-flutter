@@ -64,6 +64,8 @@ class ExpenseController {
               'amount': _amountExpense.text,
               'description': _descriptionExpense.text,
               'userID': _model.uid,
+              'date':
+                  '${_model.today.year}-${_model.today.month}-${_model.today.day}'
             };
             _db.collection("Expense Pro").add(expense).then(
                   (DocumentReference doc) => devtools.log(

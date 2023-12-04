@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 class IncomeModel {
   String dropdownValue = 'Salary';
   late String uid;
   late List<String> items;
+  DateTime today = DateTime.now();
 
   IncomeModel() {
-    uid = ''; // Initialize uid or get it from FirebaseAuth
+    uid = FirebaseAuth.instance.currentUser?.uid ?? '';
     items = [
       'Salary',
       'Freelance',

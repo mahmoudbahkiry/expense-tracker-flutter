@@ -1,5 +1,4 @@
-
-import 'package:expense_tracker_project/home_page.dart';
+import 'package:expense_tracker_project/views/home_page_view.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
 import 'package:flutter/material.dart'; // Import Flutter material library
 
@@ -15,7 +14,8 @@ class AuthenticationService {
   }
 
   // Sign in user with email and password
-  Future<void> signIn(String email, String password, BuildContext context) async {
+  Future<void> signIn(
+      String email, String password, BuildContext context) async {
     try {
       // Attempt to sign in using provided credentials
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -24,14 +24,17 @@ class AuthenticationService {
       );
 
       // Check if the user's email is verified
-      bool isVerified = await isEmailVerified(FirebaseAuth.instance.currentUser);
+      bool isVerified =
+          await isEmailVerified(FirebaseAuth.instance.currentUser);
 
       if (!isVerified) {
         // If email is not verified, show an error message
-        showError(context, "Your email is not verified. Please verify your email.");
+        showError(
+            context, "Your email is not verified. Please verify your email.");
       } else {
         // If email is verified, navigate to the Home page
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage2()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomePageView()));
       }
     } on FirebaseAuthException catch (e) {
       // Handle authentication exceptions
@@ -41,7 +44,8 @@ class AuthenticationService {
 
   // Display an error message using a SnackBar
   void showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   // Handle authentication exceptions and show appropriate error messages

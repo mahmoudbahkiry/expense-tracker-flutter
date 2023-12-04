@@ -1,5 +1,3 @@
-// home_page_view.dart
-
 import 'package:expense_tracker_project/controller/home_page_controller.dart';
 import 'package:expense_tracker_project/model/home_page_model.dart';
 import 'package:expense_tracker_project/views/Login_view.dart';
@@ -27,9 +25,37 @@ class _HomePageViewState extends State<HomePageView> {
   }
 }
 
-class PageProfile extends StatelessWidget {
+class PageHome extends StatelessWidget {
+  const PageHome({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final HomePageController controller = HomePageController();
+    return Scaffold(
+      body: Align(
+        alignment: Alignment.bottomRight,
+        child: Container(
+          margin: const EdgeInsets.all(16.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              controller.showAlertDialog(context); // Use the instance
+            },
+            backgroundColor: const Color.fromARGB(255, 22, 182, 158),
+            child: const Icon(Icons.add),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PageProfile extends StatelessWidget {
+  const PageProfile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final HomePageController controller = HomePageController();
+    final HomePageModel model = HomePageModel();
     return Scaffold(
       body: Stack(
         children: [
@@ -70,7 +96,7 @@ class PageProfile extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
-                        HomePageController().navigateToForgetPassword(context);
+                        controller.navigateToForgetPassword(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
@@ -85,8 +111,9 @@ class PageProfile extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0),
                     ElevatedButton(
-                      onPressed: () {
-                        HomePageModel().signOut();
+                      onPressed: () async {
+                        await model.signOut();
+                        // ignore: use_build_context_synchronously
                         Navigator.push(
                           context,
                           PageRouteBuilder(

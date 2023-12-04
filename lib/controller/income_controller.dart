@@ -64,6 +64,8 @@ class IncomeController {
               'amount': _amountIncome.text,
               'description': _descriptionIncome.text,
               'userID': _model.uid,
+              'date':
+                  '${_model.today.year}-${_model.today.month}-${_model.today.day}'
             };
             _db.collection("Expense Pro").add(income).then(
                   (DocumentReference doc) => devtools

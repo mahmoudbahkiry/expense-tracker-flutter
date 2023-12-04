@@ -1,6 +1,6 @@
-import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
 import 'package:expense_tracker_project/model/home_page_model.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
+import 'package:expense_tracker_project/views/master_dialog_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePageController {
@@ -11,6 +11,7 @@ class HomePageController {
   }
 
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -49,7 +50,7 @@ class HomePageController {
         return AlertDialog(
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return const IncomeExpenseDropdownMenu();
+              return const MasterDialogView();
             },
           ),
         );

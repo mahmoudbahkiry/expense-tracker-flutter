@@ -41,9 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(246, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(246, 255, 255, 255),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('images/john.jpg'),
               fit: BoxFit.cover,
