@@ -29,7 +29,7 @@ void GetInfo() {
       List<Map<String, dynamic>> data = [];
       documents.forEach((doc) {
         Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
-        if (docData.containsKey('type') && docData.containsKey('amount')) {
+        if (docData.containsKey('type') && docData.containsKey('amount') && docData['expenseIncomeType'] == 'Expense') {
           data.add(docData);
         }
       });
@@ -98,30 +98,33 @@ Widget build(BuildContext context) {
             children: [
               SizedBox(height: 50), 
               if (dataMap.isNotEmpty)
-                PieChart(
-                  dataMap: dataMap,
-                  animationDuration: Duration(milliseconds: 800),
-                  chartLegendSpacing: 50,
-                  chartRadius: MediaQuery.of(context).size.width / 2.9,
-                  colorList: colorList,
-                  initialAngleInDegree: 0,
-                  chartType: ChartType.ring,
-                  ringStrokeWidth: 30,
-                  legendOptions: LegendOptions(
-                    showLegendsInRow: false,
-                    legendPosition: LegendPosition.right,
-                    showLegends: true,
-                    legendShape: BoxShape.circle,
-                    legendTextStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
+                Padding(
+                  padding: EdgeInsets.only(left: 20.0), 
+                  child: PieChart(
+                    dataMap: dataMap,
+                    animationDuration: Duration(milliseconds: 800),
+                    chartLegendSpacing: 50,
+                    chartRadius: MediaQuery.of(context).size.width / 2.9,
+                    colorList: colorList,
+                    initialAngleInDegree: 0,
+                    chartType: ChartType.ring,
+                    ringStrokeWidth: 30,
+                    legendOptions: LegendOptions(
+                      showLegendsInRow: false,
+                      legendPosition: LegendPosition.right,
+                      showLegends: true,
+                      legendShape: BoxShape.circle,
+                      legendTextStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  chartValuesOptions: ChartValuesOptions(
-                    showChartValueBackground: true,
-                    showChartValues: true,
-                    showChartValuesInPercentage: false,
-                    showChartValuesOutside: false,
-                    decimalPlaces: 1,
+                    chartValuesOptions: ChartValuesOptions(
+                      showChartValueBackground: true,
+                      showChartValues: true,
+                      showChartValuesInPercentage: false,
+                      showChartValuesOutside: false,
+                      decimalPlaces: 1,
+                    ),
                   ),
                 ),
             ],

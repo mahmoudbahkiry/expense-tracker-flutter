@@ -5,7 +5,6 @@ import 'package:expense_tracker_project/views/forget_pass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/views/ChartPie.dart';
-import 'package:expense_tracker_project/model/FirestoreService.dart';
 
 class PageHome extends StatefulWidget {
   @override
@@ -33,7 +32,7 @@ Future<void> fetchData() async {
       documents.forEach((doc) {
         Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
         if (docData.containsKey('type') && docData.containsKey('amount') && docData.containsKey('description') && docData.containsKey('expenseIncomeType')) {
-          docData['id'] = doc.id; // Store the document ID
+          docData['id'] = doc.id; 
           data.add(docData);
         }
       });
@@ -47,7 +46,7 @@ Future<void> fetchData() async {
   }
 }
 
-// ...
+
 
 @override
 Widget build(BuildContext context) {
@@ -132,8 +131,8 @@ Widget build(BuildContext context) {
     ),
   );
 }
-
 }
+
 
   void _showAlertDialog(BuildContext context) {
     showDialog(
