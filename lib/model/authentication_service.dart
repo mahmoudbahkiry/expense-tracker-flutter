@@ -1,5 +1,5 @@
 
-import 'package:expense_tracker_project/home_page.dart';
+import 'package:expense_tracker_project/views/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Authentication
 import 'package:flutter/material.dart'; // Import Flutter material library
 

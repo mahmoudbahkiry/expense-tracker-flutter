@@ -1,5 +1,5 @@
 
-import 'package:expense_tracker_project/ModelBar.dart';
+import 'package:expense_tracker_project/model/ModelBar.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 

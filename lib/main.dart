@@ -1,5 +1,5 @@
 import 'package:expense_tracker_project/Auth/auth.dart';
-import 'package:expense_tracker_project/firebase_options.dart';
+import 'package:expense_tracker_project/model/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
