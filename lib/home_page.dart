@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
+import 'package:expense_tracker_project/views/Login_view.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -167,6 +168,16 @@ class PageProfile extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         _signOut();
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => const LoginScreen(),
+                            transitionDuration:
+                                const Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor:

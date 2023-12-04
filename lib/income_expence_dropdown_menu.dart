@@ -1,10 +1,10 @@
-import 'package:expense_tracker_project/expense_dialog.dart';
-import 'package:expense_tracker_project/income_dialog.dart';
+import 'package:expense_tracker_project/views/expense_view.dart';
+import 'package:expense_tracker_project/views/income_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 class IncomeExpenseDropdownMenu extends StatefulWidget {
-  const IncomeExpenseDropdownMenu({Key? key}) : super(key: key);
+  const IncomeExpenseDropdownMenu({super.key});
 
   @override
   State<IncomeExpenseDropdownMenu> createState() =>
@@ -88,7 +88,7 @@ class _IncomeExpenseDropdownMenuState extends State<IncomeExpenseDropdownMenu> {
         return AlertDialog(
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return const ExpenseDialog();
+              return const ExpenseView();
             },
           ),
         );
@@ -103,7 +103,7 @@ class _IncomeExpenseDropdownMenuState extends State<IncomeExpenseDropdownMenu> {
         return AlertDialog(
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return const IncomeDialog();
+              return const IncomeView();
             },
           ),
         );
