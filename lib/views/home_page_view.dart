@@ -3,6 +3,7 @@ import 'package:expense_tracker_project/model/home_page_model.dart';
 import 'package:expense_tracker_project/views/Login_view.dart';
 import 'package:flutter/material.dart';
 
+// The main class representing the HomePageView widget.
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
 
@@ -10,27 +11,33 @@ class HomePageView extends StatefulWidget {
   State<HomePageView> createState() => _HomePageViewState();
 }
 
+// The state class for HomePageView, managing the state and initialization.
 class _HomePageViewState extends State<HomePageView> {
   late HomePageController _controller;
 
   @override
   void initState() {
+    // Initialize the HomePageController when the state is created.
     _controller = HomePageController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Delegate the build operation to the controller.
     return _controller.build(context);
   }
 }
 
+// A widget representing the main content for the home page.
 class PageHome extends StatelessWidget {
   const PageHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Create an instance of the HomePageController.
     final HomePageController controller = HomePageController();
+
     return Scaffold(
       body: Align(
         alignment: Alignment.bottomRight,
@@ -38,7 +45,8 @@ class PageHome extends StatelessWidget {
           margin: const EdgeInsets.all(16.0),
           child: FloatingActionButton(
             onPressed: () {
-              controller.showAlertDialog(context); // Use the instance
+              // Call a method from the controller to show an alert dialog.
+              controller.showAlertDialog(context);
             },
             backgroundColor: const Color.fromARGB(255, 22, 182, 158),
             child: const Icon(Icons.add),
@@ -49,17 +57,21 @@ class PageHome extends StatelessWidget {
   }
 }
 
+// A widget representing the profile page.
 class PageProfile extends StatelessWidget {
   const PageProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Create instances of the controller and model.
     final HomePageController controller = HomePageController();
     final HomePageModel model = HomePageModel();
+
     return Scaffold(
       body: Stack(
         children: [
           Container(
+            // Apply a gradient background to the page.
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -96,6 +108,7 @@ class PageProfile extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
+                        // Navigate to the "Forget Password" screen.
                         controller.navigateToForgetPassword(context);
                       },
                       style: ElevatedButton.styleFrom(
@@ -112,8 +125,8 @@ class PageProfile extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     ElevatedButton(
                       onPressed: () async {
+                        // Sign out the user and navigate to the login screen.
                         await model.signOut();
-                        // ignore: use_build_context_synchronously
                         Navigator.push(
                           context,
                           PageRouteBuilder(

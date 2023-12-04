@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/views/signup_view.dart';
 
+// This class represents the controller for the landing page, responsible for building and handling navigation.
+
 class LandingPageController {
+  // Build method returns the widget tree for the landing page.
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
@@ -27,18 +30,11 @@ class LandingPageController {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const SignUp(),
-                      transitionDuration: const Duration(milliseconds: 300),
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c),
-                    ),
-                  );
+                  // Navigate to the SignUp page when the 'Get Started' button is pressed.
+                  navigateToSignUp(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 22, 182, 158),
+                  backgroundColor: const Color.fromARGB(255, 22, 182, 158),
                 ),
                 child: const Text(
                   'Get Started',
@@ -56,6 +52,7 @@ class LandingPageController {
     );
   }
 
+  // Method to navigate to the SignUp page with a fade transition.
   void navigateToSignUp(BuildContext context) {
     Navigator.push(
       context,
