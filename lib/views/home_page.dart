@@ -1,7 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expense_tracker_project/income_expence_dropdown_menu.dart';
 import 'package:expense_tracker_project/views/forget_pass.dart';
+import 'package:expense_tracker_project/views/master_dialog_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker_project/views/ChartPie.dart';
@@ -14,6 +14,7 @@ class PageHome extends StatefulWidget {
 
 // Defining the state of the StatefulWidget
 class _PageHomeState extends State<PageHome> {
+
   List<Map<String, dynamic>> _data = [];
   String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
@@ -25,6 +26,7 @@ class _PageHomeState extends State<PageHome> {
 
  // Asynchronous function to fetch data from Firestore
 Future<void> fetchData() async {
+
   try {
     final firestore = FirebaseFirestore.instance;
 
@@ -147,7 +149,7 @@ Widget build(BuildContext context) {
         return AlertDialog(
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return const IncomeExpenseDropdownMenu();
+              return const MasterDialogView();
             },
           ),
         );
@@ -169,12 +171,8 @@ class _HomePage2State extends State<HomePage2> {
 
   final List<Widget> _pages = <Widget>[
     PageHome(),
-    const Icon(
-      Icons.bar_chart,
-      size: 150,
-    ),
     PageProfile(),
-  ];
+  ]; // Removed the chart button
 
   @override
   Widget build(BuildContext context) {
@@ -204,10 +202,7 @@ class _HomePage2State extends State<HomePage2> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Chart',
-            ),
+            // Removed the chart button
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
@@ -226,6 +221,8 @@ class _HomePage2State extends State<HomePage2> {
     });
   }
 }
+
+
 
 
 class PageProfile extends StatelessWidget {

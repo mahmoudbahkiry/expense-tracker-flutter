@@ -39,65 +39,71 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromARGB(246, 255, 255, 255),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/john.jpg'),
-            fit: BoxFit.cover,
+    return WillPopScope(
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(246, 255, 255, 255),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('images/john.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('images/undraw_Mobile_login_re_9ntv.png',
-                    height: 140),
-                const Text(
-                  'Sign In',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('images/undraw_Mobile_login_re_9ntv.png',
+                      height: 140),
+                  const Text(
+                    'Sign In',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const Text(
-                  'Your money, your rules',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 30),
-                // Reusable method to build email input field
-                buildInputField(
-                  isEmailField: true,
-                  controller: emailController,
-                  hintText: 'Email',
-                  icon: const Icon(Icons.email_outlined, color: Colors.black),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 10),
-                // Reusable method to build password input field
-                buildInputField(
-                  isPassword: true,
-                  controller: passwordController,
-                  hintText: 'Password',
-                  icon: const Icon(Icons.lock_outline, color: Colors.black),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 10),
-                // Reusable method to build sign-in button
-                buildSignInButton(),
-                const SizedBox(height: 10),
-                // Reusable method to build sign-up link
-                buildSignUpText(context),
-                const SizedBox(height: 10),
-                // Reusable method to build forgot password link
-                ForgetPassText(context),
-              ],
+                  const Text(
+                    'Your money, your rules',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 30),
+                  // Reusable method to build email input field
+                  buildInputField(
+                    isEmailField: true,
+                    controller: emailController,
+                    hintText: 'Email',
+                    icon: const Icon(Icons.email_outlined, color: Colors.black),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 10),
+                  // Reusable method to build password input field
+                  buildInputField(
+                    isPassword: true,
+                    controller: passwordController,
+                    hintText: 'Password',
+                    icon: const Icon(Icons.lock_outline, color: Colors.black),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 10),
+                  // Reusable method to build sign-in button
+                  buildSignInButton(),
+                  const SizedBox(height: 10),
+                  // Reusable method to build sign-up link
+                  buildSignUpText(context),
+                  const SizedBox(height: 10),
+                  // Reusable method to build forgot password link
+                  ForgetPassText(context),
+                ],
+              ),
             ),
           ),
         ),
       ),
+      onWillPop: () async {
+        // Disable the back button
+        return false;
+      },
     );
   }
 
