@@ -1,4 +1,3 @@
-// Importing necessary packages and dependencies
 import 'package:expense_tracker_project/model/income_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,3 @@
-// Importing necessary packages and files
 import 'package:expense_tracker_project/controller/splash_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
